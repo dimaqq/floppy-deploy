@@ -1,27 +1,27 @@
-version: "3.8"
+version: '3.8'
 services:
   api:
     image: thumbnail-api
     build: .
     ports:
-      - "3000:3000"
-    environment: 
+      - '3000:3000'
+    environment:
       SERVER_TYPE: server
     env_file: local.env
-    depends_on: 
+    depends_on:
       - db
       - s3
   task:
     image: thumbnail-task
     build: .
-    environment: 
+    environment:
       SERVER_TYPE: worker
     env_file: local.env
-    depends_on: 
+    depends_on:
       - db
       - s3
   db:
-    image : mongo
+    image: mongo
     volumes:
       - ./data/database:/data/db
     ports:
@@ -30,7 +30,7 @@ services:
   s3:
     image: minio/minio
     ports:
-      - "9000:9000"
+      - '9000:9000'
     volumes:
       - ./data/minio:/data
     env_file: local.env

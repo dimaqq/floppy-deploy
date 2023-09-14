@@ -2,7 +2,7 @@
 
 Thumbnail-generator is a JSON-based REST API service which resizes images into 100x100px thumbnails.
 
-## Overview 
+## Overview
 
 ### Libraries
 
@@ -31,58 +31,72 @@ docker-compose up -d
 - Minio: runs at http://localhost:9000 (Credentials in `local.env`)
 
 ---
+
 ## Testing the service
+
 ### On your pc
 
-*This service requires NodeJS version 14.18.0+*
+_This service requires NodeJS version 14.18.0+_
 
 Database and queue are mocked which means it doesnt have to run in docker
+
 ```properties
 npm install
 npm run test
 ```
 
 ### For development
+
 You can run `npm run test:watch` for an instant feedback loop
 
 ### Notes
+
 - `src/test/images` are images used as inputs for the unit tests and testing
 - `src/test/images_temp` is a directory used by the unit tests
 
 ---
+
 ## REST API
+
 ### Postman collection
+
 There is a postman collection for your convenience. Import `Thumbnail Generator.postman_collection.json` into postman to use it.
 
 ### Post image
+
 `POST http://localhost:3000/thumbnail`
 
 - Upload an image as `file` in the form-data
 
-Curl example: 
+Curl example:
+
 ```bash
 curl --location --request POST 'http://localhost:3000/thumbnail' \
 --form 'file=@"/path/to/image.png"'
 ```
 
 ### Get job status and result thumbnail as presigned url
+
 `GET http://localhost:3000/thumbnail/:id`
 
 - Gets the current status of the task, and if complete returns as presigned url
 - The presigned url only works if you set a vhost for `s3` to `127.0.0.1` in `/etc/hosts`
 - Use `job_id` from the previous POST API as the `id` url parameter
 
-Curl example: 
+Curl example:
+
 ```bash
 curl --location --request GET 'http://localhost:3000/thumbnail/c7b4319e-b8f6-4ab0-8fb7-5b51db5c0c36'
 ```
 
 ### Get result thumbnail directly
+
 Use `job_id` from the previous POST API as the `id` url parameter
 
 `GET http://localhost:3000/thumbnail/:id/image`
 
-Curl example: 
+Curl example:
+
 ```bash
 curl --location --request GET 'http://localhost:3000/thumbnail/c7b4319e-b8f6-4ab0-8fb7-5b51db5c0c36/image'
 ```
@@ -90,4 +104,3 @@ curl --location --request GET 'http://localhost:3000/thumbnail/c7b4319e-b8f6-4ab
 ## Notes for deployment
 
 - The application as a whole (all docker images) requires about 2Gb of memory, 2 full CPUs, and 20GB of disk space to run safely.
-
