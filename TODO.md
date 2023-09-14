@@ -1,10 +1,24 @@
 ## Plan
 
+- Κυβερνήτης
+  - [ ] play around with `k0s`, because it's cool
+  - [ ] get the setup to work on local machine, that's what future devs will use
+    - Docker Desktop with k8s enabled
+    - tilt.dev
+- Installer
+  - [ ] try `nix` because both build and deploy is reproducible
+  - [ ] try Snap
+  - [ ] try Flatpak
+- Integration
+  - [ ] set up GHA for components
+  - [ ] port to `k3s`, because it's a stated requirement
+  - [ ] automated smoke test
+
 ## Overview
 
 ### Technologies
 
-- [ ] Your solution must make use of k3s and must be able to install it air-gapped (not requiring internet access during installation).
+- [ ] Your solution must make use of `k3s` and must be able to install it air-gapped (not requiring internet access during installation).
 - [ ] You must create a helm chart(s) for deploying the application and its dependencies into kubernetes.
 - [ ] You are free to make other technology choices as you see fit, in order to meet or exceed the other requirements below - as long as you can guarantee they will work out of the box on Cogent’s side.
 
