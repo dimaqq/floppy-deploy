@@ -1,5 +1,18 @@
 ## Plan
 
+- Discussion
+  - Ideally, I'd distribute the software as a VM image:
+    - Software on the distributed VM image disk, in installed and working state
+    - Customer data on an attached disk
+  - But, the requirements being what they are, I'm thinking the next best thing is ...
+- Concept
+  - Don't touch the host OS
+  - install software into `/opt` or similar
+  - store data e.g. in `/var`, don't clear on uninstall
+  - upgrade = uninstall + install
+  - upgrade only needs to detect existing customer data
+  - downgrade is the application's problem
+  - testability first, the installer will be used in automated tests more than in real deployments
 - Κυβερνήτης
   - [ ] play around with `k0s`, because it's cool
   - [ ] get the setup to work on local machine, that's what future devs will use
