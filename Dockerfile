@@ -2,7 +2,7 @@ FROM node:18.17.1-alpine3.18
 
 WORKDIR /usr/src/app
 
-COPY package.json tsconfig.json src .
+COPY package.json package-lock.json tsconfig.json src .
 
 RUN npm install
 
