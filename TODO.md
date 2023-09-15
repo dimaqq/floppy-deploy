@@ -18,6 +18,9 @@
   - [ ] get the setup to work on local machine, that's what future devs will use
     - Docker Desktop with k8s enabled
     - tilt.dev
+- Dependencies
+  - local image repository (except k0s can preload from a directory?)
+  - etcd
 - Installer
   - [ ] try `nix` because both build and deploy is reproducible
   - [ ] try Snap
@@ -26,6 +29,45 @@
   - [ ] set up GHA for components
   - [ ] port to `k3s`, because it's a stated requirement
   - [ ] automated smoke test
+
+### What's Hard?
+
+- artefacts
+  - business images
+  - internal images, like `pause`
+  - infra images like admission controllers
+  - helm charts
+  - helm operators
+- updates
+  - update lag when a CVE is published
+  - updates of the business logic
+  - data and historical data format updates
+- storage
+  - attached storage
+  - object storage
+  - logging and telemetry storage
+  - kubernetes state storage
+  - snapshots, backup and restore
+- infrastructure
+  - logging
+  - DNS
+  - NTP
+  - access control
+  - API gateways
+  - compliance, e.g. right to be forgotten
+- certificates
+  - browsers rely on TLS for security, but also
+  - browsers don't do HTTP/2 without TLS, meaning slower access
+  - the traditional solution is for each vendor to bake a 100-year self-signed CA, ideally separate for each deployment
+  - ultimately, client company wants security, so maybe they have their own custom CA preinstalled in all client machines, how does the API deployment get a certificate from this CA?
+- instrumentation
+  - where to store the data?
+  - how to expose telemetry to client's IT for monitoring?
+  - how to send notifications when a metric passes a threshold?
+- cost-effectiveness
+  - cloud provides resources to workload scale
+  - on-prem environment essentially has be provisioned to max forseeable capacity instead
+  - that affects not only business logic, but also business backing store, logging and logging backing store, all the way down
 
 ## Overview
 
