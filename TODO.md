@@ -36,6 +36,7 @@
   - business images
   - internal images, like `pause`
   - infra images like admission controllers
+  - debug images
   - helm charts
   - helm operators
 - updates
