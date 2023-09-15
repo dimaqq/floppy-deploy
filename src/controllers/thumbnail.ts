@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { agenda, TASK_TYPES } from '../worker';
 import { putFile, getFileLink, getFile } from '../storage';
 import { getDatabase } from '../database';
-import { v4 as uuidv4 } from 'uuid';
 import { ObjectId } from 'mongodb';
 
 import type {
@@ -27,13 +26,13 @@ const createResizeImageJob = async (
   }
 
   try {
-    const uuid = uuidv4();
+    const id = new ObjectId();
     const extension = req.file.originalname.split('.').pop();
-    const filename = `${uuid}.${extension}`;
+    const filename = `${id}.${extension}`;
     const fileResult = putFile(filename, req.file.buffer);
     if (fileResult) {
       const thumbnailJob = {
-        _id: new ObjectId(uuid),
+        _id: id,
         filename,
         originalFilename: req.file.originalname,
         status: 'waiting',
@@ -44,7 +43,7 @@ const createResizeImageJob = async (
       // create a job for the worker to pickup, scheduled from now
       await agenda.now(TASK_TYPES.RESIZE_IMAGE, thumbnailJob);
       // include job_id in response which can be used to retrieve the result thumbnail
-      res.status(200).send({ data: { job_id: uuid } });
+      res.status(200).send({ data: { job_id: id } });
     } else {
       res.status(400).send({ error: 'Error occurred' });
     }

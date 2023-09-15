@@ -71,7 +71,7 @@ describe('Thumbnail jobs', () => {
 
   it('Resizing 400x400 image will succeed', async () => {
     const [input, output] = await test(
-      'good_image_400x400',
+      '123456789012345678900000',
       'good_image_400x400.png'
     );
     await goodExpectations(output, input);
@@ -79,7 +79,7 @@ describe('Thumbnail jobs', () => {
 
   it('Resizing 50x50 image will succeed', async () => {
     const [input, output] = await test(
-      'good_image_50x50',
+      '123456789012345678900001',
       'good_image_50x50.png'
     );
     await goodExpectations(output, input);
@@ -87,7 +87,7 @@ describe('Thumbnail jobs', () => {
 
   it('Resizing pdf with fail', async () => {
     const [input, output] = await test(
-      'bad_image_actually_pdf',
+      '123456789012345678900002',
       'bad_image_actually_pdf.png'
     );
     await badExpectations(output, input);

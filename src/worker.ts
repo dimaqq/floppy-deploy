@@ -2,14 +2,10 @@ import Agenda from 'agenda';
 import { resizeImage } from './jobs/thumbnail';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const agenda = new (Agenda as any)({
+const agenda = new Agenda({
   db: {
     address: process.env.MONGO_URL,
-    collection: 'agenda',
-    options: {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    }
+    collection: 'agenda'
   }
 });
 

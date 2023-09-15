@@ -40,7 +40,7 @@ const goodTest = async (name: string) => {
     .findOne({ _id: data._id });
 
   expect(record).toEqual(data);
-  expect(record._id).toEqual(jobId);
+  expect(record._id.toString()).toEqual(jobId);
 };
 
 describe('Thumbnail routes', () => {
