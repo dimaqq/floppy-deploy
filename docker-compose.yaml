@@ -2,6 +2,7 @@ version: '3.8'
 services:
   api:
     image: thumbnail-api
+    init: true
     build: .
     ports:
       - '3000:3000'
@@ -13,6 +14,7 @@ services:
       - s3
   task:
     image: thumbnail-task
+    init: true
     build: .
     environment:
       SERVER_TYPE: worker

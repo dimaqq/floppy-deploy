@@ -44,22 +44,18 @@ const goodTest = async (name: string) => {
 };
 
 describe('Thumbnail routes', () => {
-  beforeAll((done) => {
+  beforeAll(async () => {
     // mock agenda to process instantly rather than using set timeout in tests
     agenda.now = jest.fn();
-    connectDatabase(async () => {
-      await getDatabase().collection('thumbnailJob').deleteMany({});
-      done();
-    });
+    await connectDatabase();
+    await getDatabase().collection('thumbnailJob').deleteMany({});
   });
 
-  afterAll((done) => {
-    closeDatabase(() => {
-      done();
-    });
+  afterAll(async () => {
+    await closeDatabase();
   });
 
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.clearAllMocks();
   });
 

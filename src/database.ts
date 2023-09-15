@@ -3,29 +3,18 @@ import { MongoClient, Db } from 'mongodb';
 let database: Db;
 let connection: MongoClient;
 
-const connectDatabase = (callback: (err: Error) => void): void => {
-  MongoClient.connect(
-    process.env.MONGO_URL,
-    { useNewUrlParser: true, useUnifiedTopology: true },
-    (err, client) => {
-      database = client.db();
-      connection = client;
-      callback(err);
-    }
-  );
+const connectDatabase = async () => {
+  connection = await MongoClient.connect(process.env.MONGO_URL);
+  database = connection.db('thumbnail-generator');
 };
 
 const getDatabase = (): Db => {
   return database;
 };
 
-const closeDatabase = (callback: (err: Error) => void): void => {
+const closeDatabase = async () => {
   console.log('closing connections');
-  connection.close(true, (err) => {
-    database = null;
-    connection = null;
-    callback(err);
-  });
+  await connection.close();
 };
 
 export { getDatabase, connectDatabase, closeDatabase };

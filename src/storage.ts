@@ -11,18 +11,18 @@ const storage = new minio.Client({
 const BUCKET_NAME = 'thumbnails';
 
 // make sure the bucket exists before starting the server
-const initStorage = async (): Promise<boolean> => {
+const initStorage = async () => {
   try {
     const alreadyExists = await storage.bucketExists(BUCKET_NAME);
     if (alreadyExists) {
-      return true;
+      return;
     }
     console.log('Bucket doesnt exist. Creating bucket: ', BUCKET_NAME);
     await storage.makeBucket(BUCKET_NAME, 'ap-northeast-1');
-    return true;
+    return;
   } catch (error) {
     console.error('Storage init failed: ', error);
-    return false;
+    throw error;
   }
 };
 

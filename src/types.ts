@@ -1,4 +1,5 @@
 import { Request } from 'express';
+import { Document, WithId } from 'mongodb';
 
 interface Job {
   attrs: {
@@ -6,8 +7,7 @@ interface Job {
   };
 }
 
-interface ThumbnailJobData {
-  _id: string;
+interface ThumbnailJobData extends WithId<Document> {
   filename: string;
   originalFilename: string;
   status: string;

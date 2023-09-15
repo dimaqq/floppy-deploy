@@ -3,6 +3,8 @@ import { agenda, TASK_TYPES } from '../worker';
 import { putFile, getFileLink, getFile } from '../storage';
 import { getDatabase } from '../database';
 import { v4 as uuidv4 } from 'uuid';
+import { ObjectId } from 'mongodb';
+
 import type {
   ThumbnailJobData,
   GetThumbnailJobResponse,
@@ -31,7 +33,7 @@ const createResizeImageJob = async (
     const fileResult = putFile(filename, req.file.buffer);
     if (fileResult) {
       const thumbnailJob = {
-        _id: uuid,
+        _id: new ObjectId(uuid),
         filename,
         originalFilename: req.file.originalname,
         status: 'waiting',
@@ -57,9 +59,9 @@ const getResizeImageJob = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const job: ThumbnailJobData | null = await getDatabase()
+  const job: ThumbnailJobData | null = (await getDatabase()
     .collection('thumbnailJob')
-    .findOne({ _id: req.params.id });
+    .findOne({ _id: new ObjectId(req.params.id) })) as ThumbnailJobData | null;
   if (job) {
     const responseData: GetThumbnailJobResponse = { ...job, thumbnailLink: '' };
 
@@ -78,9 +80,9 @@ const getResizeImageJobDownload = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const job: ThumbnailJobData | null = await getDatabase()
+  const job: ThumbnailJobData | null = (await getDatabase()
     .collection('thumbnailJob')
-    .findOne({ _id: req.params.id });
+    .findOne({ _id: new ObjectId(req.params.id) })) as ThumbnailJobData | null;
   if (job) {
     // send the image directly for convenience
     const thumbnailStream = await getFile(job.thumbnailFilename, false);

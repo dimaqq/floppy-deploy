@@ -3,12 +3,13 @@ import { connectDatabase, closeDatabase, getDatabase } from '../../database';
 import * as minio from 'minio';
 import { resizeImage } from '../../jobs/thumbnail';
 import { getFile } from '../../storage';
+import { ObjectId } from 'mongodb';
 jest.mock('minio');
 
 // base test steps
 const test = async (id: string, filename: string) => {
   const data = {
-    _id: id,
+    _id: new ObjectId(id),
     filename: `${id}.png`,
     status: 'waiting',
     thumbnailFilename: '',
@@ -55,22 +56,17 @@ const badExpectations = async (record: any, data: any) => {
 };
 
 describe('Thumbnail jobs', () => {
-  beforeAll((done) => {
-    connectDatabase(async () => {
-      await getDatabase().collection('thumbnailJob').deleteMany({});
-      done();
-    });
+  beforeAll(async () => {
+    await connectDatabase();
+    await getDatabase().collection('thumbnailJob').deleteMany({});
   });
 
-  afterAll((done) => {
-    closeDatabase(() => {
-      done();
-    });
+  afterAll(async () => {
+    await closeDatabase();
   });
 
-  beforeEach((done) => {
+  beforeEach(async () => {
     jest.clearAllMocks();
-    done();
   });
 
   it('Resizing 400x400 image will succeed', async () => {
