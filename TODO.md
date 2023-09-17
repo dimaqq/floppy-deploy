@@ -23,12 +23,41 @@
   - etcd
 - Installer
   - [ ] try `nix` because both build and deploy is reproducible
+    - It turns out that while nix ships `.service` files with the installed packages and these files are meant to integrate into `systemd`, the integration only works with nixOS and not e.g. Ubuntu `systemd`.
+    - Upgrading VM in place to nixOS... is tempting
+    - Getting the files into the VM using nix bolting systemd integration on top is doable, though fragile
+    - Relying on k3s/helm/etc. executable installed on Ubuntu is more fragile though, esp. the cleanup and upgrade parts
   - [ ] try Snap
+    - k3s not available, there's a 2-year-old private project though
   - [ ] try Flatpak
+    - doesn't seem to be available
 - Integration
   - [ ] set up GHA for components
   - [ ] port to `k3s`, because it's a stated requirement
   - [ ] automated smoke test
+
+```
+wget https://github.com/k3s-io/k3s/releases/download/v1.25.14-rc1%2Bk3s1/k3s-airgap-images-arm64.tar.gz
+gunzip k3s-airgap-images-arm64.tar.gz
+mkdir -p /var/lib/rancher/k3s/agent/images/
+cp k3s-airgap-images-arm64.tar /var/lib/rancher/k3s/agent/images/
+
+wget https://github.com/k3s-io/k3s/releases/download/v1.25.14-rc1%2Bk3s1/k3s-arm64
+chmod a+x k3s-arm64
+cp k3s-arm64 /usr/local/bin/
+(cd /usr/local/bin/; ln -s k3s-arm64 k3s)
+
+ufw disable
+
+# Must have a default route, even if that's unreachable, e.g.
+ip link add dummy0 type dummy
+ip link set dummy0 up
+ip addr add 169.254.255.254/31 dev dummy0
+ip route add default via 169.254.255.255 dev dummy0 metric 1000
+
+wget https://get.k3s.io -O install.sh
+INSTALL_K3S_SKIP_DOWNLOAD=true sh ./install.sh
+```
 
 ### What's Hard?
 
