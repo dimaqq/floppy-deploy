@@ -1,0 +1,18 @@
+# FIXME:
+# bitnami chart pulls amd64 image on arm64 platform, ouch!
+# bitnami only build mongodb for amd64, oh no!
+# https://hub.docker.com/r/bitnami/mongodb/tags
+#
+# https://stackoverflow.com/a/73162339/705086
+# I had the same problem and saw that there was not enough timeoutSeconds
+#
+# readinessProbe:
+#   timeoutSeconds: 5
+
+readinessProbe:
+  timeoutSeconds: 30
+  enabled: false
+
+livenessProbe:
+  timeoutSeconds: 30
+  enabled: false
