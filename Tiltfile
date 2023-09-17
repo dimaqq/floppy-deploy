@@ -32,6 +32,7 @@ helm_remote(
     repo_name="bitnami",
     repo_url="https://charts.bitnami.com/bitnami",
     namespace="data-store",
+    values=["./minio-values.yaml"],
 )
 
 mongo_yaml = helm(
@@ -68,8 +69,9 @@ api_yaml = helm(
 
 k8s_yaml(api_yaml)
 
-k8s_resource("minio")
-k8s_resource("mongodb")
+# FIXME these dependencies must be replicated somehow in production
+k8s_resource("minio", port_forwards="9000:9000")
+k8s_resource("mongodb", port_forwards="27017:27017")
 k8s_resource("api", resource_deps=["minio", "mongodb"])
 
 # Build Docker image

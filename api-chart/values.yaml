@@ -7,5 +7,10 @@ service:
   type: ClusterIP
   port: 3000
 
-mongo:
-  serviceName: mongo
+mongodb:
+  namespace: data-store
+  serviceName: mongodb
+
+minio:
+  namespace: data-store
+  serviceName: minio

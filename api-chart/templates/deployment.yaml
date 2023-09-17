@@ -18,4 +18,14 @@ spec:
           imagePullPolicy: '{{ .Values.image.pullPolicy }}'
           env:
             - name: MONGO_URL
-              value: "mongodb://{{ .Values.mongo.serviceName }}.{{ .Release.Namespace }}.svc.cluster.local:27017/dbname"
+              value: "mongodb://{{ .Values.mongodb.serviceName }}.{{ .Values.mongodb.namespace }}.svc.cluster.local:27017/dbname"
+            - name: MINIO_ENDPOINT
+              value: "{{ .Values.minio.serviceName }}.{{ .Values.minio.namespace }}.svc.cluster.local"
+            - name: MINIO_PORT
+              value: "9000"
+            - name: MINIO_USE_SSL
+              value: "false"
+            - name: MINIO_ACCESS_KEY
+              value: "someaccesskey"
+            - name: MINIO_SECRET_KEY
+              value: "somesecretkey"
