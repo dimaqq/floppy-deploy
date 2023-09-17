@@ -27,7 +27,14 @@ namespace_create("data-store")
 load("ext://helm_resource", "helm_resource", "helm_repo")
 load("ext://helm_remote", "helm_remote")
 
-yaml = helm(
+helm_remote(
+    "minio",
+    repo_name="bitnami",
+    repo_url="https://charts.bitnami.com/bitnami",
+    namespace="data-store",
+)
+
+mongo_yaml = helm(
     "./mongodb-chart",
     # The release name, equivalent to helm --name
     # name='release-name',
@@ -41,14 +48,29 @@ yaml = helm(
     set=["service.port=27017", "ingress.enabled=true"],
 )
 
-k8s_yaml(yaml)
+k8s_yaml(mongo_yaml)
 
-helm_remote(
-    "minio",
-    repo_name="bitnami",
-    repo_url="https://charts.bitnami.com/bitnami",
+
+api_yaml = helm(
+    "./api-chart",
+    # The release name, equivalent to helm --name
+    # name='release-name',
+    # The namespace to install in, equivalent to helm --namespace
+    # FIXME: temporary, get this to work first, then move to own namespace
     namespace="data-store",
+    # The values file to substitute into the chart.
+    # values=['./path/to/chart/dir/values-dev.yaml'],
+    # Values to set from the command-line
+    # FIXME: not sure if it's needed...
+    # FIXME: drop ingress when API works
+    set=["service.port=3000", "ingress.enabled=true"],
 )
+
+k8s_yaml(api_yaml)
+
+k8s_resource("minio")
+k8s_resource("mongodb")
+k8s_resource("api", resource_deps=["minio", "mongodb"])
 
 # Build Docker image
 #   Tilt will automatically associate image builds with the resource(s)

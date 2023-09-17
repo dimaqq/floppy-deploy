@@ -57,6 +57,13 @@ ip route add default via 169.254.255.255 dev dummy0 metric 1000
 
 wget https://get.k3s.io -O install.sh
 INSTALL_K3S_SKIP_DOWNLOAD=true sh ./install.sh
+
+
+# local multi-arch build
+docker build -t floppies:dev --platform linux/amd64,linux/arm64 .
+
+# how to check architectures in the local image?
+# actually... with multiarch / fat manifest (?) I'm stuck
 ```
 
 ### What's Hard?

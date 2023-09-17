@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: api
+          image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
+          imagePullPolicy: '{{ .Values.image.pullPolicy }}'
+          env:
+            - name: MONGO_URL
+              value: "mongodb://{{ .Values.mongo.serviceName }}.{{ .Release.Namespace }}.svc.cluster.local:27017/dbname"

@@ -1,0 +1,11 @@
+image:
+  repository: floppies
+  tag: dev
+  pullPolicy: Never
+
+service:
+  type: ClusterIP
+  port: 3000
+
+mongo:
+  serviceName: mongo

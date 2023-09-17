@@ -1,10 +1,12 @@
 image:
   repository: mongo
-  tag: 6.0
+  tag:
+    6.0
+    # FIXME: copy the images explicitly and change this Never
   pullPolicy: IfNotPresent
 
 persistence:
-  # Must match the VOLUME declataion in the container image
+  # Must match the VOLUME declaration in the container image
   # See `docker history --no-trunc mongo:6.0`
   db:
     enabled: true
@@ -16,5 +18,11 @@ persistence:
     storageSize: 10Mi
 
 service:
+  # FIXME: Hide the port
+  # - one option is not to expose it at all
+  #   - certainly most secure
+  #   - monitoring, etc. would be added to the pod
+  # - another option is to expose it, but block at load balancer
+  #   - this may be nicer if other, debug tools are added
   type: ClusterIP
   port: 27017
