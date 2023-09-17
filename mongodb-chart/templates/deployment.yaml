@@ -21,4 +21,5 @@ spec:
               mountPath: '{{ .Values.persistence.mountPath }}'
       volumes:
         - name: mongodb-data
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: mongodb
