@@ -12,30 +12,47 @@
 #   multiline strings and common string operations such as formatting.
 #
 #   More info: https://docs.tilt.dev/api.html#api.warn
-print("""
+print(
+    """
 -----------------------------------------------------------------
 ✨ Hello Tilt! This appears in the (Tiltfile) pane whenever Tilt
    evaluates this file.
 -----------------------------------------------------------------
-""".strip())
+""".strip()
+)
 
-load('ext://namespace', 'namespace_create', 'namespace_inject')
+load("ext://namespace", "namespace_create", "namespace_inject")
 namespace_create("data-store")
 
-load('ext://helm_resource', 'helm_resource', 'helm_repo')
-load('ext://helm_remote', 'helm_remote')
+load("ext://helm_resource", "helm_resource", "helm_repo")
+load("ext://helm_remote", "helm_remote")
 
-#helm_remote('mongodb',
+# helm_remote('mongodb',
 #            repo_name='bitnami',
 #            repo_url='https://charts.bitnami.com/bitnami',
 #            namespace="data-store",
 #            values=["./mongodb-values.yaml"],
-#)
+# )
+#
 
-helm_remote('minio',
-            repo_name='bitnami',
-            repo_url='https://charts.bitnami.com/bitnami',
-            namespace="data-store",
+yaml = helm(
+    "./mongodb-chart",
+    # The release name, equivalent to helm --name
+    # name='release-name',
+    # The namespace to install in, equivalent to helm --namespace
+    namespace="data-store",
+    # The values file to substitute into the chart.
+    # values=['./path/to/chart/dir/values-dev.yaml'],
+    # Values to set from the command-line
+    set=["service.port=27017", "ingress.enabled=true"],
+)
+k8s_yaml(yaml)
+
+helm_remote(
+    "minio",
+    repo_name="bitnami",
+    repo_url="https://charts.bitnami.com/bitnami",
+    namespace="data-store",
 )
 
 # Build Docker image
@@ -114,7 +131,7 @@ helm_remote('minio',
 #
 #   More info: https://github.com/tilt-dev/tilt-extensions
 #
-load('ext://git_resource', 'git_checkout')
+load("ext://git_resource", "git_checkout")
 
 
 # Organize logic into functions
@@ -126,14 +143,15 @@ load('ext://git_resource', 'git_checkout')
 def tilt_demo():
     # Tilt provides many useful portable built-ins
     # https://docs.tilt.dev/api.html#modules.os.path.exists
-    if os.path.exists('tilt-avatars/Tiltfile'):
+    if os.path.exists("tilt-avatars/Tiltfile"):
         # It's possible to load other Tiltfiles to further organize
         # your logic in large projects
         # https://docs.tilt.dev/multiple_repos.html
-        load_dynamic('tilt-avatars/Tiltfile')
-    watch_file('tilt-avatars/Tiltfile')
-    git_checkout('https://github.com/tilt-dev/tilt-avatars.git',
-                 checkout_dir='tilt-avatars')
+        load_dynamic("tilt-avatars/Tiltfile")
+    watch_file("tilt-avatars/Tiltfile")
+    git_checkout(
+        "https://github.com/tilt-dev/tilt-avatars.git", checkout_dir="tilt-avatars"
+    )
 
 
 # Edit your Tiltfile without restarting Tilt
