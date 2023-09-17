@@ -27,14 +27,6 @@ namespace_create("data-store")
 load("ext://helm_resource", "helm_resource", "helm_repo")
 load("ext://helm_remote", "helm_remote")
 
-# helm_remote('mongodb',
-#            repo_name='bitnami',
-#            repo_url='https://charts.bitnami.com/bitnami',
-#            namespace="data-store",
-#            values=["./mongodb-values.yaml"],
-# )
-#
-
 yaml = helm(
     "./mongodb-chart",
     # The release name, equivalent to helm --name
@@ -44,8 +36,11 @@ yaml = helm(
     # The values file to substitute into the chart.
     # values=['./path/to/chart/dir/values-dev.yaml'],
     # Values to set from the command-line
+    # FIXME: not sure if it's needed...
+    # FIXME: drop ingress when API works
     set=["service.port=27017", "ingress.enabled=true"],
 )
+
 k8s_yaml(yaml)
 
 helm_remote(
