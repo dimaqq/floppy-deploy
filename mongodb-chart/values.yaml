@@ -4,9 +4,16 @@ image:
   pullPolicy: IfNotPresent
 
 persistence:
-  enabled: true
-  mountPath: /data
-  storageSize: 1Gi
+  # Must match the VOLUME declataion in the container image
+  # See `docker history --no-trunc mongo:6.0`
+  db:
+    enabled: true
+    mountPath: /data/db
+    storageSize: 1Gi
+  configdb:
+    enabled: true
+    mountPath: /data/configdb
+    storageSize: 10Mi
 
 service:
   type: ClusterIP

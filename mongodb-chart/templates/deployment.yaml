@@ -17,9 +17,14 @@ spec:
           image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
           imagePullPolicy: '{{ .Values.image.pullPolicy }}'
           volumeMounts:
-            - name: mongodb-data
-              mountPath: '{{ .Values.persistence.mountPath }}'
+            - name: mongodb-db
+              mountPath: '{{ .Values.persistence.db.mountPath }}'
+            - name: mongodb-configdb
+              mountPath: '{{ .Values.persistence.configdb.mountPath }}'
       volumes:
-        - name: mongodb-data
+        - name: mongodb-db
           persistentVolumeClaim:
-            claimName: mongodb
+            claimName: mongodb-db
+        - name: mongodb-configdb
+          persistentVolumeClaim:
+            claimName: mongodb-configdb
