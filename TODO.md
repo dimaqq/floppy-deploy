@@ -99,6 +99,16 @@ INSTALL_K3S_SKIP_DOWNLOAD=true sh ./install.sh
   - on-prem environment essentially has be provisioned to max forseeable capacity instead
   - that affects not only business logic, but also business backing store, logging and logging backing store, all the way down
 
+### Lessons Learnt
+
+Supporting developers and production at the same time is still hard.
+
+- bitnami chart pulls amd64 image on arm64 platform, ouch!
+- bitnami only build mongodb for amd64, oh no!
+- https://hub.docker.com/r/bitnami/mongodb/tags
+- https://stackoverflow.com/a/73162339/705086
+- Sadly, even that's not enough as mongodb binary is huge, it takes a lot of CPU crunching to start up... like minutes...
+
 ## Overview
 
 ### Technologies
