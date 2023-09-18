@@ -92,6 +92,14 @@ docker build -t floppies:dev --platform linux/amd64,linux/arm64 .
 
 # how to check architectures in the local image?
 # actually... with multiarch / fat manifest (?) I'm stuck
+
+
+
+
+helm template minio "/Users/dima/Library/Application Support/tilt-dev/.helm/bitnami/latest/minio" --namespace data-store --include-crds --values deploy/helm/minio/values.yaml
+helm template chart /Volumes/Code/floppies/deploy/helm/mongodb --namespace data-store --include-crds --set service.port=27017 --set ingress.enabled=true
+helm template chart /Volumes/Code/floppies/deploy/helm/api --namespace web-api --include-crds --set service.port=3000 --set ingress.enabled=true
+helm template chart /Volumes/Code/floppies/deploy/helm/worker --namespace web-api --include-crds
 ```
 
 ### What's Hard?
