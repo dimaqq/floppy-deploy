@@ -72,10 +72,16 @@ api_yaml = helm(
 
 k8s_yaml(api_yaml)
 
+worker_yaml = helm("./worker-chart", namespace="web-api")
+
+k8s_yaml(worker_yaml)
+
+
 # FIXME these dependencies must be replicated somehow in production
 k8s_resource("minio", port_forwards="9000:9000")
 k8s_resource("mongodb", port_forwards="27017:27017")
 k8s_resource("api", resource_deps=["minio", "mongodb"])
+k8s_resource("worker", resource_deps=["minio", "mongodb"])
 
 # Build Docker image
 #   Tilt will automatically associate image builds with the resource(s)
