@@ -41,8 +41,28 @@
 Leftovers
 
 - tilt.dev
-  - [ ] separate api/wrk and min/mon into separate namespaces
+  - [x] separate api/wrk and min/mon into separate namespaces
     - requires `network-policy.yaml`
+- helm
+  - [ ] tests
+  - [ ] metrics/telemetry/monitoring
+  - [ ] minio chart
+    - vendor?
+    - pull on build?
+      - pin specific version
+- organisation
+  - [ ] separate `deploy` dir
+- testing
+  - [ ] GHA for `npm test`
+  - [ ] GHA for `docker build .`
+  - [ ] GHA for functional test for docker composition
+  - [ ] helm tests
+  - [ ] build test
+  - [ ] packaging test
+  - [ ] installation test on fresh vm
+  - [ ] status test
+  - [ ] uninstall test
+  - [ ] stability tests (e.g. simulate app container failure, make minio unavailable, etc.)
 
 ```
 wget https://github.com/k3s-io/k3s/releases/download/v1.25.14-rc1%2Bk3s1/k3s-airgap-images-arm64.tar.gz
