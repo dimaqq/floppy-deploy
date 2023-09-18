@@ -23,6 +23,9 @@ print(
 
 load("ext://namespace", "namespace_create", "namespace_inject")
 namespace_create("data-store")
+k8s_yaml("./network-policy.yaml")
+
+namespace_create("web-api")
 
 load("ext://helm_resource", "helm_resource", "helm_repo")
 load("ext://helm_remote", "helm_remote")
@@ -58,7 +61,7 @@ api_yaml = helm(
     # name='release-name',
     # The namespace to install in, equivalent to helm --namespace
     # FIXME: temporary, get this to work first, then move to own namespace
-    namespace="data-store",
+    namespace="web-api",
     # The values file to substitute into the chart.
     # values=['./path/to/chart/dir/values-dev.yaml'],
     # Values to set from the command-line

@@ -15,26 +15,34 @@
   - testability first, the installer will be used in automated tests more than in real deployments
 - Κυβερνήτης
   - [ ] play around with `k0s`, because it's cool
-  - [ ] get the setup to work on local machine, that's what future devs will use
+    - maybe later, no time now
+  - [x] get the setup to work on local machine, that's what future devs will use
     - Docker Desktop with k8s enabled
     - tilt.dev
 - Dependencies
   - local image repository (except k0s can preload from a directory?)
   - etcd
 - Installer
-  - [ ] try `nix` because both build and deploy is reproducible
+  - [x] try `nix` because both build and deploy is reproducible
+    - nix installation is very nice and clean, but...
     - It turns out that while nix ships `.service` files with the installed packages and these files are meant to integrate into `systemd`, the integration only works with nixOS and not e.g. Ubuntu `systemd`.
     - Upgrading VM in place to nixOS... is tempting
     - Getting the files into the VM using nix bolting systemd integration on top is doable, though fragile
     - Relying on k3s/helm/etc. executable installed on Ubuntu is more fragile though, esp. the cleanup and upgrade parts
-  - [ ] try Snap
+  - [x] try Snap
     - k3s not available, there's a 2-year-old private project though
-  - [ ] try Flatpak
+  - [x] try Flatpak
     - doesn't seem to be available
 - Integration
   - [ ] set up GHA for components
-  - [ ] port to `k3s`, because it's a stated requirement
+  - [x] port to `k3s`, because it's a stated requirement
   - [ ] automated smoke test
+
+Leftovers
+
+- tilt.dev
+  - [ ] separate api/wrk and min/mon into separate namespaces
+    - requires `network-policy.yaml`
 
 ```
 wget https://github.com/k3s-io/k3s/releases/download/v1.25.14-rc1%2Bk3s1/k3s-airgap-images-arm64.tar.gz

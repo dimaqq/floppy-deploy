@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-web-api-to-data-store
+  namespace: data-store
+spec:
+  policyTypes:
+    - Ingress
+  podSelector:
+    # FIXME we could be stricter here
+    # in the end, we need to allow both api and worker pods
+    matchLabels: {}
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: web-api # Well-known label, by k8s API server
+      ports:
+        - protocol: TCP
+          port: 9000
+        - protocol: TCP
+          port: 27017

@@ -17,6 +17,8 @@ spec:
           image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
           imagePullPolicy: '{{ .Values.image.pullPolicy }}'
           env:
+            - name: SERVER_TYPE
+              value: "server"
             - name: MONGO_URL
               value: "mongodb://{{ .Values.mongodb.serviceName }}.{{ .Values.mongodb.namespace }}.svc.cluster.local:27017/dbname"
             - name: MINIO_ENDPOINT
