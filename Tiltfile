@@ -23,7 +23,7 @@ print(
 
 load("ext://namespace", "namespace_create", "namespace_inject")
 namespace_create("data-store")
-k8s_yaml("./network-policy.yaml")
+k8s_yaml("deploy/kubernetes/network-policy.yaml")
 
 namespace_create("web-api")
 
@@ -35,11 +35,11 @@ helm_remote(
     repo_name="bitnami",
     repo_url="https://charts.bitnami.com/bitnami",
     namespace="data-store",
-    values=["./minio-values.yaml"],
+    values=["deploy/helm/minio/values.yaml"],
 )
 
 mongo_yaml = helm(
-    "./mongodb-chart",
+    "deploy/helm/mongodb",
     # The release name, equivalent to helm --name
     # name='release-name',
     # The namespace to install in, equivalent to helm --namespace
@@ -56,7 +56,7 @@ k8s_yaml(mongo_yaml)
 
 
 api_yaml = helm(
-    "./api-chart",
+    "deploy/helm/api",
     # The release name, equivalent to helm --name
     # name='release-name',
     # The namespace to install in, equivalent to helm --namespace
@@ -72,7 +72,7 @@ api_yaml = helm(
 
 k8s_yaml(api_yaml)
 
-worker_yaml = helm("./worker-chart", namespace="web-api")
+worker_yaml = helm("deploy/helm/worker", namespace="web-api")
 
 k8s_yaml(worker_yaml)
 
