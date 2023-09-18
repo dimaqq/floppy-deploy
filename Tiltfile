@@ -21,6 +21,14 @@ print(
 """.strip()
 )
 
+docker_build(
+    "floppies",
+    ".",
+    only=["package.json", "package-lock.json", "tsconfig.json", "src"],
+    build_args={"platform": "linux/amd64,linux/arm64"},
+    extra_tag="floppies:dev",
+)
+
 load("ext://namespace", "namespace_create", "namespace_inject")
 namespace_create("data-store")
 k8s_yaml("deploy/kubernetes/network-policy.yaml")

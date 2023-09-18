@@ -65,7 +65,19 @@ const getResizeImageJob = async (
 
     // include a presigned url to the thumbnail if the resize job has completed
     if (job.status === 'complete') {
-      responseData.thumbnailLink = await getFileLink(job.thumbnailFilename);
+      // FIXME: convert the hostname of the presigned request
+      // In production, the hostname is smth like http://minio.data-store.svc.cluster.local
+      // Which is only accessible within the cluster.
+      // API client can't resolve this name.
+      // There are two possibilities:
+      // 1. do expose minio (say on port 9000), replace the host with the request host
+      // 2. don't expose minio, replace the link with `/thumbnail/${job._id}/image`
+      //   * if an absolute link is needed, then replace the host with the request host too
+
+      // opt 1.
+      // responseData.thumbnailLink = (await getFileLink(job.thumbnailFilename)).replace("fixme", "foobar");
+      // opt 2 simple, relative link
+      responseData.thumbnailLink = `/thumbnail/${job._id}/image`;
     }
     res.status(200).send({ data: responseData });
   } else {
