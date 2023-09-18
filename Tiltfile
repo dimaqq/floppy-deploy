@@ -80,7 +80,7 @@ k8s_yaml(worker_yaml)
 # FIXME these dependencies must be replicated somehow in production
 k8s_resource("minio", port_forwards="9000:9000")
 k8s_resource("mongodb", port_forwards="27017:27017")
-k8s_resource("api", resource_deps=["minio", "mongodb"])
+k8s_resource("api", resource_deps=["minio", "mongodb"], port_forwards="3000:3000")
 k8s_resource("worker", resource_deps=["minio", "mongodb"])
 
 # Build Docker image

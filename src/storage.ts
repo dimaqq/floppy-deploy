@@ -21,6 +21,7 @@ const initStorage = async (): Promise<boolean> => {
     await storage.makeBucket(BUCKET_NAME, 'ap-northeast-1');
     return true;
   } catch (error) {
+    if (error.code == 'BucketAlreadyOwnedByYou') return true;
     console.error('Storage init failed: ', error);
     return false;
   }
