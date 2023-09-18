@@ -1,0 +1,12 @@
+image:
+  repository: floppies
+  tag: dev
+  pullPolicy: Never
+
+mongodb:
+  namespace: data-store
+  serviceName: mongodb
+
+minio:
+  namespace: data-store
+  serviceName: minio

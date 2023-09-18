@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: worker
+  template:
+    metadata:
+      labels:
+        app: worker
+    spec:
+      containers:
+        - name: worker
+          image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
+          imagePullPolicy: '{{ .Values.image.pullPolicy }}'
+          env:
+            - name: SERVER_TYPE
+              value: "worker"
+            - name: MONGO_URL
+              value: "mongodb://{{ .Values.mongodb.serviceName }}.{{ .Values.mongodb.namespace }}.svc.cluster.local:27017/dbname"
+            - name: MINIO_ENDPOINT
+              value: "{{ .Values.minio.serviceName }}.{{ .Values.minio.namespace }}.svc.cluster.local"
+            - name: MINIO_PORT
+              value: "9000"
+            - name: MINIO_USE_SSL
+              value: "false"
+            - name: MINIO_ACCESS_KEY
+              value: "someaccesskey"
+            - name: MINIO_SECRET_KEY
+              value: "somesecretkey"
