@@ -46,74 +46,22 @@ helm_remote(
     values=["deploy/helm/minio/values.yaml"],
 )
 
-mongo_yaml = helm(
-    "deploy/helm/mongodb",
-    # The release name, equivalent to helm --name
-    # name='release-name',
-    # The namespace to install in, equivalent to helm --namespace
-    namespace="data-store",
-    # The values file to substitute into the chart.
-    # values=['./path/to/chart/dir/values-dev.yaml'],
-    # Values to set from the command-line
-    # FIXME: not sure if it's needed...
-    # FIXME: drop ingress when API works
-    set=["service.port=27017", "ingress.enabled=true"],
-)
-
+mongo_yaml = helm("deploy/helm/mongodb", namespace="data-store")
 k8s_yaml(mongo_yaml)
 
 
-api_yaml = helm(
-    "deploy/helm/api",
-    # The release name, equivalent to helm --name
-    # name='release-name',
-    # The namespace to install in, equivalent to helm --namespace
-    # FIXME: temporary, get this to work first, then move to own namespace
-    namespace="web-api",
-    # The values file to substitute into the chart.
-    # values=['./path/to/chart/dir/values-dev.yaml'],
-    # Values to set from the command-line
-    # FIXME: not sure if it's needed...
-    # FIXME: drop ingress when API works
-    set=["service.port=3000", "ingress.enabled=true"],
-)
-
+api_yaml = helm("deploy/helm/api", namespace="web-api")
 k8s_yaml(api_yaml)
 
 worker_yaml = helm("deploy/helm/worker", namespace="web-api")
-
 k8s_yaml(worker_yaml)
 
 
-# FIXME these dependencies must be replicated somehow in production
+# FIXME: replicate these dependencies in production
 k8s_resource("minio", port_forwards="9000:9000")
 k8s_resource("mongodb", port_forwards="27017:27017")
 k8s_resource("api", resource_deps=["minio", "mongodb"], port_forwards="3000:3000")
 k8s_resource("worker", resource_deps=["minio", "mongodb"])
-
-# Build Docker image
-#   Tilt will automatically associate image builds with the resource(s)
-#   that reference them (e.g. via Kubernetes or Docker Compose YAML).
-#
-#   More info: https://docs.tilt.dev/api.html#api.docker_build
-#
-# docker_build('registry.example.com/my-image',
-#              context='.',
-#              # (Optional) Use a custom Dockerfile path
-#              dockerfile='./deploy/app.dockerfile',
-#              # (Optional) Filter the paths used in the build
-#              only=['./app'],
-#              # (Recommended) Updating a running container in-place
-#              # https://docs.tilt.dev/live_update_reference.html
-#              live_update=[
-#                 # Sync files from host to container
-#                 sync('./app', '/src/'),
-#                 # Execute commands inside the container when certain
-#                 # paths change
-#                 run('/src/codegen.sh', trigger=['./app/api'])
-#              ]
-# )
-
 
 # Apply Kubernetes manifests
 #   Tilt will build & push any necessary images, re-deploying your

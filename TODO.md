@@ -94,12 +94,16 @@ docker build -t floppies:dev --platform linux/amd64,linux/arm64 .
 # actually... with multiarch / fat manifest (?) I'm stuck
 
 
+# Relative to ./deploy/helm
 
+# name must be passed explicitly
+helm pull oci://registry-1.docker.io/bitnamicharts/minio --version 12.8.5 -d minio
+helm template minio minio/minio-12.8.5.tgz --namespace data-store --include-crds --values minio/values.yaml
 
-helm template minio "/Users/dima/Library/Application Support/tilt-dev/.helm/bitnami/latest/minio" --namespace data-store --include-crds --values deploy/helm/minio/values.yaml
-helm template chart /Volumes/Code/floppies/deploy/helm/mongodb --namespace data-store --include-crds --set service.port=27017 --set ingress.enabled=true
-helm template chart /Volumes/Code/floppies/deploy/helm/api --namespace web-api --include-crds --set service.port=3000 --set ingress.enabled=true
-helm template chart /Volumes/Code/floppies/deploy/helm/worker --namespace web-api --include-crds
+# name can be anything because name is specified in the chart itself
+helm template mongodb mongodb --namespace data-store --include-crds
+helm template api api --namespace web-api --include-crds
+helm template worker worker --namespace web-api --include-crds
 ```
 
 ### What's Hard?

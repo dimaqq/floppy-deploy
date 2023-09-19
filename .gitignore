@@ -1,6 +1,16 @@
+# js artefacts
 dist
 node_modules
 data
+
+# dev secrets
 globalConfig.json
+
+# Vim
 .*.swp
+
+# macos
 .DS_Store
+
+# downloaded helm charts
+*.tgz
