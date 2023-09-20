@@ -3,7 +3,10 @@ ARCH?=arm64
 # More realistic for production
 ARCH?=amd64
 
-default: build/nix-$(ARCH).tar
+default: dist/nix.tar
+
+dist/nix.tar: build/nix-$(ARCH).tar
+	cp $< $@
 
 all: build/nix-arm64.tar build/nix-amd64.tar
 
