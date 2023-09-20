@@ -109,6 +109,24 @@ iptables-save | grep -v KUBE-ROUTER | iptables-restore
 ip6tables-save | grep -v KUBE-ROUTER | ip6tables-restore
 ```
 
+#### Testing the manifest
+
+```
+# Make sure there's an API server container image
+docker build -t floppies:dev --platform linux/amd64,linux/arm64 .
+
+# Generate the combined manifest
+make -C deploy/
+
+# Deploy to local cluster
+kubectl apply -f deploy/dist/manifest.yaml
+
+# Add reverse proxy and load balancer
+helm repo add traefik https://helm.traefik.io/traefik
+helm repo update
+helm install traefik traefik/traefik --namespace web-api
+```
+
 ### What's Hard?
 
 - artefacts
