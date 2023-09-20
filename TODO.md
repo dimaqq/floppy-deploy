@@ -125,6 +125,9 @@ kubectl apply -f deploy/dist/manifest.yaml
 helm repo add traefik https://helm.traefik.io/traefik
 helm repo update
 helm install traefik traefik/traefik --namespace web-api
+
+# Smoke test
+curl localhost:80
 ```
 
 ### What's Hard?
