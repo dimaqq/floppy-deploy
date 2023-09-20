@@ -45,10 +45,13 @@ Leftovers
 - helm
   - [ ] tests
   - [ ] metrics/telemetry/monitoring
-  - [ ] minio chart
-    - vendor?
+  - [x] minio chart
+    - ~vendor?~
     - pull on build?
       - pin specific version
+  - [x] explicit namespaces in templates https://github.com/helm/helm/issues/3553
+- kubernetes
+  - [ ] operators
 - organisation
   - [x] separate `deploy` dir
 - nix
@@ -66,6 +69,8 @@ Leftovers
   - [ ] status test
   - [ ] uninstall test
   - [ ] stability tests (e.g. simulate app container failure, make minio unavailable, etc.)
+- uninstall
+  - [ ] remove k3s iptables rules
 
 ```
 wget https://github.com/k3s-io/k3s/releases/download/v1.25.14-rc1%2Bk3s1/k3s-airgap-images-arm64.tar.gz
@@ -92,9 +97,12 @@ INSTALL_K3S_SKIP_DOWNLOAD=true sh ./install.sh
 
 # local multi-arch build
 docker build -t floppies:dev --platform linux/amd64,linux/arm64 .
+```
 
-# how to check architectures in the local image?
-# actually... with multiarch / fat manifest (?) I'm stuck
+```
+# remove k3s iptables rules
+iptables-save | grep -v KUBE-ROUTER | iptables-restore
+ip6tables-save | grep -v KUBE-ROUTER | ip6tables-restore
 ```
 
 ### What's Hard?

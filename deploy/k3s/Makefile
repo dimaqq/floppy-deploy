@@ -3,6 +3,10 @@ ARCH?=arm64
 # More realistic for production
 ARCH?=amd64
 
+# There's going to be more here
+# - k3s required images
+# - systemd
+# - PATH injection
 default: dist/nix.tar
 
 dist/nix.tar: build/nix-$(ARCH).tar

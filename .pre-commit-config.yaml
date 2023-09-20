@@ -4,6 +4,7 @@ repos:
     hooks:
       - id: check-yaml
         exclude: '.*/templates/.*[.]ya?ml'
+        args: [--allow-multiple-documents]
       - id: end-of-file-fixer
       - id: trailing-whitespace
   - repo: https://github.com/pre-commit/mirrors-prettier

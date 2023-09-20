@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: worker
+  namespace: {{ .Release.Namespace | quote }}
 spec:
   replicas: 1
   selector:
@@ -12,6 +13,7 @@ spec:
       labels:
         app: worker
     spec:
+      restartPolicy: Always
       containers:
         - name: worker
           image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
