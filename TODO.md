@@ -14,8 +14,7 @@
   - downgrade is the application's problem
   - testability first, the installer will be used in automated tests more than in real deployments
 - Κυβερνήτης
-  - [ ] play around with `k0s`, because it's cool
-    - maybe later, no time now
+  - [ ] ~play around with `k0s`, because it's cool~ maybe later
   - [x] get the setup to work on local machine, that's what future devs will use
     - Docker Desktop with k8s enabled
     - tilt.dev
