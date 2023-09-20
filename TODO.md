@@ -51,7 +51,11 @@ Leftovers
     - pull on build?
       - pin specific version
 - organisation
-  - [ ] separate `deploy` dir
+  - [x] separate `deploy` dir
+- nix
+  - [x] pin specific nix version for reproducible build
+  - [ ] understand and fix the `filter-syscalls = false` build hack on aarch64
+  - [ ] fix "cross-compile" nix install failing with `error: unable to load seccomp BPF program: Invalid argument`
 - testing
   - [ ] GHA for `npm test`
   - [ ] GHA for `docker build .`
@@ -92,18 +96,6 @@ docker build -t floppies:dev --platform linux/amd64,linux/arm64 .
 
 # how to check architectures in the local image?
 # actually... with multiarch / fat manifest (?) I'm stuck
-
-
-# Relative to ./deploy/helm
-
-# name must be passed explicitly
-helm pull oci://registry-1.docker.io/bitnamicharts/minio --version 12.8.5 -d minio
-helm template minio minio/minio-12.8.5.tgz --namespace data-store --include-crds --values minio/values.yaml
-
-# name can be anything because name is specified in the chart itself
-helm template mongodb mongodb --namespace data-store --include-crds
-helm template api api --namespace web-api --include-crds
-helm template worker worker --namespace web-api --include-crds
 ```
 
 ### What's Hard?
@@ -206,13 +198,38 @@ As an experienced and careful engineer, you recognize the importance of document
   - How easy it is to diagnose and debug issues in your system at the application, cluster, and host level?
 - [ ] Updates
   - Suppose you made changes to the code or helm charts - how would you provide those updates to the user?
+    - Rebuild, test, send someone with new installer to the customer, uninstall, install new version.
 - [ ] Security
   - Is traffic securely handled within your k3s cluster?
   - Do pods have appropriate RBAC?
 - [ ] Protection against IP theft and unauthorized use
   - Suppose your application contained sensitive intellectual property - how could this be protected in your installation?
+    - Company level
+      - Adaptability Over Code: The real competitive advantage lies in a company's ability to rapidly innovate and update its algorithms, rendering any stolen older versions obsolete.
+      - Business Relationships and Ecosystem: The value of a business often lies in its established partnerships and role within a broader ecosystem, aspects that are hard to replicate even with access to the source code.
+      - Operational Excellence: The unique data and operational skills required to effectively run and support the application provide a competitive edge that goes beyond the code itself.
+      - Knowledge and Expertise: The human talent and contextual understanding behind an application are irreplaceable assets that can't be duplicated simply by copying source code.
+      - Legal Protections: While not foolproof, the potential for legal repercussions serves as a deterrent against IP theft and reinforces other forms of competitive advantage.
+    - Technical level
+      - My personal take is that it's a fool's errand. Having worked in 3 companies that considered this, I found that in 2/3 the issue always falls behind acquiring new customers and making new features; and 1/3 required the code to run in vendor's own cloud, no exceptions allowed.
   - Suppose you had licensing within the application that limited API usage - how could you use that to prevent repeated uninstall/reinstall for unlimited usage?
+    - In the spirit of Socratic method, let's consider
+      - What stops the client from cloning the VM after the installation is complete and working?
+        - Maybe a hardware token?
+          - Doable, but then customer's rack will soon have all USB ports taken by different vendors' tokens... It's not truly scalable, but may just work if we're first.
+        - MAC address change
+          - New VM can be created with the same virtual MAC
+        - Disk UUID
+          - Ditto, ultimately, what id customer has a legitimate reason to migrate the VM or take a backup or to upgrade underlying hardware?
+        - A gap in logs
+          - What if the customer has a power outage, surely we'd want our service to come up?
 - [ ] Multi-node support
   - Suppose you wanted to support multiple VMs connected into a single cluster - how might you support that in your installer?
+    - [ ] etcd or mysql/postgres instead of sqlite in k3s
+    - [ ] istio or similar to secure traffic between nodes
+      - PKI rollout
+    - [ ] beefier upgrade testing infrastructure
 - [ ] Autoscaling
   - Suppose the application needed to autoscale - how might that look in this setting and how
+    - In my (current) opinion, that's rarely asked for in on-prem deployments, because the resources are provisioned in advance
+    - It's a thing for private cloud deployments... I feel that the deployment would be rather different in this case
