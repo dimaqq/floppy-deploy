@@ -17,7 +17,8 @@
     "lint:prettier:fix": "prettier --config .prettierrc 'src/**/*.ts' --write"
   },
   "author": "Cogent Labs SPE member",
-  "license": "MIT",
+  "license": "UNLICENSED",
+  "private": true,
   "jest": {
     "preset": "./src/test/presets.js",
     "verbose": true,
