@@ -26,6 +26,14 @@ EOF
 # End Nix
 # BASHOFF
 
+# FIXME: add tools that on-site SRE may need to debug and fix stuff in airgapped production
+# k9s kubetail jq
+# traceroute emacs zip
+#
+# already available
+# nc pstree tcpdump curl wget top htop dig tmux
+# pstree tracepath mtr ss grep sed wget nslookup nano screen tmux ufw tar
+
 RUN <<EOF
   # Install k3s and deps
   set -vex
