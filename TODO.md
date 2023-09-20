@@ -50,8 +50,12 @@ Leftovers
     - pull on build?
       - pin specific version
   - [x] explicit namespaces in templates https://github.com/helm/helm/issues/3553
+  - [ ] use helm controller
+    - probably convert services into subcharts
 - kubernetes
   - [ ] operators
+  - [ ] metallb instead of traefik
+  - [ ] use helm controller
 - organisation
   - [x] separate `deploy` dir
 - nix
