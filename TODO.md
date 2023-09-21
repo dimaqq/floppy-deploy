@@ -67,9 +67,38 @@ docker build -t floppies:dev --platform linux/amd64,linux/arm64 .
 ```
 
 ```
+sudo systemctl daemon-reload
+sudo systemctl enable k3s.service
+sudo systemctl start k3s.service
+```
+
+```
 # remove k3s iptables rules
 iptables-save | grep -v KUBE-ROUTER | iptables-restore
 ip6tables-save | grep -v KUBE-ROUTER | ip6tables-restore
+```
+
+Add this to status command
+
+```
+k3s check-config
+# sample badness (?)
+#     - CONFIG_INET_XFRM_MODE_TRANSPORT: missing
+# This is a red herring, as that kernel option is used for IPSec which is only used by the deprecated flannel backend in k3s.
+```
+
+#### SystemD
+
+```
+# default systemd path
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+# needed systemd path
+> PATH=/root/.nix-profile/bin:/nix/var/nix/profiles/default/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
+# delta:
+# /root/.nix-profile/bin:/nix/var/nix/profiles/default/bin:
+# Other env
+> NIX_PROFILES=/nix/var/nix/profiles/default /root/.nix-profile
+> NIX_SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 ```
 
 [Building and testing the kubernetes all-in-one manifest](deploy/readme.md)

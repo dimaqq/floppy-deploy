@@ -38,7 +38,12 @@ RUN <<EOF
   # Install k3s and deps
   set -vex
   . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+  # Prod cluster
   nix-env -i k3s
+  # SRE tools
+  nix-env -i k9s kubetail jq traceroute vim
+  # Cleanup
+  nix-store --gc
   # TODO: tar has a few issues that prevent deterministic builds
   # Either post-process, or use some other tool
   tar --owner=0 --group=0 --numeric-owner -cf nix.tar nix

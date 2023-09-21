@@ -34,3 +34,4 @@ clean:
 	docker rm nix-tmp-amd64 || true
 	docker rmi nix:dev-amd64 || true
 	rm -rf build/*.tar
+	rm -rf dist/*.tar
