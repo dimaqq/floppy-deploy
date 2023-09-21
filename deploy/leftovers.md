@@ -1,0 +1,40 @@
+## Leftovers
+
+- tilt.dev
+  - [x] separate api/wrk and min/mon into separate namespaces
+    - requires `network-policy.yaml`
+- helm
+  - [ ] tests
+  - [ ] metrics/telemetry/monitoring
+  - [x] minio chart
+    - ~vendor?~
+    - pull on build?
+      - pin specific version
+  - [x] explicit namespaces in templates https://github.com/helm/helm/issues/3553
+  - [ ] use helm controller
+    - probably convert services into subcharts
+- kubernetes
+  - [ ] operators, maybe?
+  - [ ] metallb instead of traefik
+  - [ ] use helm controller
+  - [ ] write readiness and liveness probes
+  - [ ] use these for ordered startup
+- organisation
+  - [x] separate `deploy` dir
+- nix
+  - [x] pin specific nix version for reproducible build
+  - [ ] understand and fix the `filter-syscalls = false` build hack on aarch64
+  - [ ] fix "cross-compile" nix install failing with `error: unable to load seccomp BPF program: Invalid argument`
+- testing
+  - [ ] GHA for `npm test`
+  - [ ] GHA for `docker build .`
+  - [ ] GHA for functional test for docker composition
+  - [ ] helm tests
+  - [ ] build test
+  - [ ] packaging test
+  - [ ] installation test on fresh vm
+  - [ ] status test
+  - [ ] uninstall test
+  - [ ] stability tests (e.g. simulate app container failure, make minio unavailable, etc.)
+- uninstall
+  - [ ] remove k3s iptables rules

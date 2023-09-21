@@ -37,44 +37,7 @@
   - [x] port to `k3s`, because it's a stated requirement
   - [ ] automated smoke test
 
-Leftovers
-
-- tilt.dev
-  - [x] separate api/wrk and min/mon into separate namespaces
-    - requires `network-policy.yaml`
-- helm
-  - [ ] tests
-  - [ ] metrics/telemetry/monitoring
-  - [x] minio chart
-    - ~vendor?~
-    - pull on build?
-      - pin specific version
-  - [x] explicit namespaces in templates https://github.com/helm/helm/issues/3553
-  - [ ] use helm controller
-    - probably convert services into subcharts
-- kubernetes
-  - [ ] operators
-  - [ ] metallb instead of traefik
-  - [ ] use helm controller
-- organisation
-  - [x] separate `deploy` dir
-- nix
-  - [x] pin specific nix version for reproducible build
-  - [ ] understand and fix the `filter-syscalls = false` build hack on aarch64
-  - [ ] fix "cross-compile" nix install failing with `error: unable to load seccomp BPF program: Invalid argument`
-- testing
-  - [ ] GHA for `npm test`
-  - [ ] GHA for `docker build .`
-  - [ ] GHA for functional test for docker composition
-  - [ ] helm tests
-  - [ ] build test
-  - [ ] packaging test
-  - [ ] installation test on fresh vm
-  - [ ] status test
-  - [ ] uninstall test
-  - [ ] stability tests (e.g. simulate app container failure, make minio unavailable, etc.)
-- uninstall
-  - [ ] remove k3s iptables rules
+[Leftovers and to do](deploy/leftovers.md)
 
 ```
 wget https://github.com/k3s-io/k3s/releases/download/v1.25.14-rc1%2Bk3s1/k3s-airgap-images-arm64.tar.gz
