@@ -2,7 +2,13 @@
 
 default: dist/manifest.yaml build/api-image.tar k3s/dist/bundle.tar
 	docker build -t installer:dev .
-	# TODO: create container, cp out the installer, remove container
+	# AppImageKit will create exact same arch AppImage as the kit itself
+	docker create --name installer-arm64 installer:dev
+	docker cp installer-arm64:SampleApp-aarch64.AppImage ./dist
+	docker rm installer-arm64
+	# docker create --name installer-amd64 installer:dev
+	# docker cp installer-amd64:SampleApp-x86_64.AppImage ./dist
+	# docker rm installer-amd64
 
 dist/manifest.yaml: kubernetes/dist/all.yaml helm/dist/all.yaml
 	cat $^ > $@

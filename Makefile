@@ -3,6 +3,9 @@ default: build/api-image.tar
 	# FIXME: unconditional copy forces rebuild down the line
 	cp build/api-image.tar deploy/build/
 	make -C deploy
+	@echo -- --
+	@echo "All done!"
+	sum deploy/dist/*
 
 build/api-image.tar:
 	docker build -t floppies:dev --platform linux/amd64,linux/arm64 .

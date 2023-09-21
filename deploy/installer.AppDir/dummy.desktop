@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=SampleApp
+GenericName=Sample Application
+Comment=This is a sample application for demonstration purposes.
+Exec=/usr/bin/sampleapp
+Icon=sampleapp
+Terminal=false
+Categories=Utility;Application;

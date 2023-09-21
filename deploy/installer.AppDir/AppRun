@@ -1,2 +1,28 @@
 #!/bin/bash
-echo FIXME
+set -vex
+
+if [[ $UID -ne 0 ]]; then
+    echo "Please run the installer with sudo"
+    exit 1
+fi
+
+ufw disable
+systemctl disable ufw
+
+tar xf bundle.tar -C /
+
+cp api-image.tar /var/lib/rancher/k3s/agent/images/
+sudo systemctl enable k3s.service
+sudo systemctl start k3s.service
+
+echo FIXME place manifest.yaml somewhere, it is needed on reboot, I think
+
+# FIXME add nix PATH and KUBECONFIG for all users
+. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+
+kubectl apply -f manifest.yaml
+
+echo . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+echo export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+echo "all done, use e.g. k9s to see what's going on"
