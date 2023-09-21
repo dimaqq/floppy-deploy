@@ -53,18 +53,11 @@ RUN <<EOF
   curl -sL --fail https://github.com/k3s-io/k3s/releases/download/v1.27.5%2Bk3s1/k3s-airgap-images-$tag.tar -o /var/lib/rancher/k3s/agent/images/k3s.tar
 EOF
 
+COPY ./k3s.service /etc/systemd/system/
+
 RUN <<EOF
   # Bundle k3s and images
   # TODO: tar has a few issues that prevent deterministic builds
   # Either post-process, or use some other tool
-  tar --owner=0 --group=0 --numeric-owner -cf bundle.tar nix var/lib/rancher
-EOF
-
-RUN <<EOF
-  # Bundle into an AppImage
-  set -vex
-  # While the release is called "continuous", it's actually pretty stable, only 1 update this year
-  [ `arch` = aarch64 ] && tag=aarch64 || tag=x86_64
-  curl -L --fail https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-$tag.AppImage -o appimagetool
-  chmod a+x appimagetool
+  tar --owner=0 --group=0 --numeric-owner -cf bundle.tar nix var/lib/rancher /etc/systemd/system/k3s.service
 EOF

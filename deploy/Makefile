@@ -1,5 +1,8 @@
 .PHONY: kubernetes/dist/all.yaml helm/dist/all.yaml k3s/dist/nix.tar
 
+default: dist/manifest.yaml build/api-image.tar
+	docker build -t installer:dev .
+
 dist/manifest.yaml: kubernetes/dist/all.yaml helm/dist/all.yaml
 	cat $^ > $@
 
