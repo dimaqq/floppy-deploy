@@ -7,7 +7,7 @@
   - But, the requirements being what they are, I'm thinking the next best thing is ...
 - Concept
   - Don't touch the host OS
-  - install software into `/opt` or similar
+  - install software into ~`/opt` or similar~ `/nix` (as much as possible)
   - store data e.g. in `/var`, don't clear on uninstall
   - upgrade = uninstall + install
   - upgrade only needs to detect existing customer data
@@ -36,6 +36,12 @@
   - [ ] set up GHA for components
   - [x] port to `k3s`, because it's a stated requirement
   - [ ] automated smoke test
+- Installer
+  - [ ] AppImage
+  - [ ] some scripting, e.g. ~micropython~ python or bash
+    - there's x86_64 python AppImage out there, but no arm64 version
+    - ubuntu server (default) install includes python3, but I'm not clear if this can be relied on
+  - [ ] a bunch of tar files
 
 [Leftovers and to do](deploy/leftovers.md)
 

@@ -27,8 +27,8 @@ EOF
 # BASHOFF
 
 # FIXME: add tools that on-site SRE may need to debug and fix stuff in airgapped production
-# k9s kubetail jq
-# traceroute emacs zip
+# k9s kubetail jq traceroute vim  # work ok
+# emacs zip  # nix builds those from source and installs way too many deps to do that
 #
 # already available
 # nc pstree tcpdump curl wget top htop dig tmux
@@ -44,7 +44,27 @@ RUN <<EOF
   nix-env -i k9s kubetail jq traceroute vim
   # Cleanup
   nix-store --gc
+EOF
+
+RUN <<EOF
+  # Fetch k3s images
+  mkdir -p /var/lib/rancher/k3s/agent/images/
+  [ `arch` = aarch64 ] && tag=arm64 || tag=amd64
+  curl -sL --fail https://github.com/k3s-io/k3s/releases/download/v1.27.5%2Bk3s1/k3s-airgap-images-$tag.tar -o /var/lib/rancher/k3s/agent/images/k3s.tar
+EOF
+
+RUN <<EOF
+  # Bundle k3s and images
   # TODO: tar has a few issues that prevent deterministic builds
   # Either post-process, or use some other tool
-  tar --owner=0 --group=0 --numeric-owner -cf nix.tar nix
+  tar --owner=0 --group=0 --numeric-owner -cf bundle.tar nix var/lib/rancher
+EOF
+
+RUN <<EOF
+  # Bundle into an AppImage
+  set -vex
+  # While the release is called "continuous", it's actually pretty stable, only 1 update this year
+  [ `arch` = aarch64 ] && tag=aarch64 || tag=x86_64
+  curl -L --fail https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-$tag.AppImage -o appimagetool
+  chmod a+x appimagetool
 EOF
