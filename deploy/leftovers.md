@@ -19,6 +19,8 @@
   - [ ] use helm controller
   - [ ] write readiness and liveness probes
   - [ ] use these for ordered startup
+  - [ ] krew and plugins
+    - build a support bundle
 - organisation
   - [x] separate `deploy` dir
 - nix

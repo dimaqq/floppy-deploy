@@ -87,6 +87,15 @@ k3s check-config
 # This is a red herring, as that kernel option is used for IPSec which is only used by the deprecated flannel backend in k3s.
 ```
 
+Add this to all users
+
+```
+# Nix
+. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+# k3s
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+```
+
 #### SystemD
 
 ```

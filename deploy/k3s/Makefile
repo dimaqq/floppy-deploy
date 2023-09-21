@@ -28,6 +28,12 @@ build/nix-amd64.tar:
 	docker cp nix-tmp-amd64:/nix.tar $@
 	docker rm nix-tmp-amd64
 
+build/k3s-airgap-images-arm64.tar:
+	curl -sL --fail 'https://github.com/k3s-io/k3s/releases/download/v1.27.5%2Bk3s1/'$(notdir $@) -o $@
+
+build/k3s-airgap-images-amd64.tar:
+	curl -sL --fail 'https://github.com/k3s-io/k3s/releases/download/v1.27.5%2Bk3s1/'$(notdir $@) -o $@
+
 clean:
 	docker rm nix-tmp-arm64 || true
 	docker rmi nix:dev-arm64 || true
